@@ -30,6 +30,7 @@ limitations under the License.
       <span class="bar-sep">|</span>
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
+          <!--
           <v-avatar color="rgb(39, 39, 39)"
              v-bind="attrs"
              v-on="on">
@@ -37,8 +38,17 @@ limitations under the License.
               mdi-account-circle
             </v-icon>
           </v-avatar>
+          -->
+          <v-app-bar-nav-icon
+             v-bind="attrs"
+             v-on="on">
+          </v-app-bar-nav-icon>
         </template>
         <v-list>
+          <v-list-item href="https://github.com/skiller3/brompoker">
+            <v-list-item-icon><v-icon>mdi-github</v-icon></v-list-item-icon>
+            <v-list-item-title>Source Code</v-list-item-title>
+          </v-list-item>
           <v-list-item @click="() => this.showImageUploadDialog = true">
             <v-list-item-icon><v-icon>mdi-image</v-icon></v-list-item-icon>
             <v-list-item-title>Upload Table Image</v-list-item-title>
@@ -92,9 +102,17 @@ limitations under the License.
   .router-link-active {
     color: yellow !important;
   }
+  /*
   .v-avatar > .v-icon {
     border: 2px solid white;
   }
+  */
+  button.v-app-bar__nav-icon {
+    border: 1px solid white;
+    border-radius: 4px;
+    margin-right: 0.5em !important;
+  }
+
 </style>
 
 <script>

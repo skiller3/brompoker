@@ -13,5 +13,35 @@
 # limitations under the License.
 
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+
+class Club(models.Model):
+    creation_timestamp = models.DateTimeField(null=False)
+    name = models.CharField(null=False, blank=False, max_length=128)
+    non_members_allowed = models.BooleanField(null=False, default=False)
+    anonymous_users_allowed = models.BooleanField(null=False, default=False)
+
+
+class ClubMembership(models.Model):
+    creation_timestamp = models.DateTimeField(null=False)
+    user = models.ForeignKey(User, null=False)
+    club = models.ForeignKey(Club, null=False)
+    admin = models.BooleanField(null=False, default=False)
+
+
+class Game(models.Model):
+    creation_timestamp = models.DateTimeField(null=False)
+    name = models.CharField(null=False, blank=False, max_length=128)
+    club = models.Foreignkey(Club, null=False)
+    config = models.JSONField(null=False, blank=False)
+    state = models.JSONField(null=False, blank=False)
+
+
+class GameEvent(models.Model):
+    timestamp = models.DateTimeField(null=False)
+    game = models.ForeignKey(Game, null=False)
+    type = models.CharField(null=False, blank=False, max_length=64)
+    content = models.JSONField(null=False, blank=False)
+
+
