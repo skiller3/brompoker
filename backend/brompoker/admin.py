@@ -13,5 +13,19 @@
 # limitations under the License.
 
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+
+@admin.register(models.Club)
+class ClubAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(models.ClubMembership)
+class ClubAdmin(admin.ModelAdmin):
+    list_display = ('club', 'user')
+    
+
+@admin.register(models.Game)
+class ClubAdmin(admin.ModelAdmin):
+    list_display = ('name',)
