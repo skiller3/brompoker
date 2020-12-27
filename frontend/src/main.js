@@ -36,10 +36,32 @@ dao.isAuthenticated(
       vuetify,
       data: function() {
         return { 
-          authenticated
+          authenticated,
+          clubs: [],
+          games: [],
+          sessions: []
         }
       },
-      render: h => h(App)
+      render: h => h(App),
+      mounted: function() {
+        const lobbySocket = dao.subscribeToClubList()
+        lobbySocket.onmessage = function(event) {
+          const payload = JSON.parse(event.data)
+          payload.clubs.forEach((c) => window.vue.clubs.push(c))
+          payload.games.forEach((g) => this.games.push(g))
+          payload.sessions.forEach((s) => this.sessions.push(s))
+        }
+        lobbySocket.onclose = function() {
+          console.error('Lobby socket closed')
+        }
+        lobbySocket.onerror = function() {
+          console.error('Lobby socket received error')
+        }
+        lobbySocket.onopen = function(){
+          console.log('Lobby socket opened')
+        }
+        window.lobbySocket = lobbySocket
+      }
     }).$mount('#app')
   }, 
   function() {

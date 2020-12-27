@@ -25,6 +25,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from . import settings_gitignore
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dv3a%ynu9ydd9vnobql%yw82d_)qc+j21p&zu9z4e9xi2c5r^+'
+SECRET_KEY = settings_gitignore.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'brompoker'
 ]
 
@@ -83,17 +85,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
+ASGI_APPLICATION = 'project.asgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = settings_gitignore.DATABASES
+
+
+CHANNEL_LAYERS = settings_gitignore.CHANNEL_LAYERS
 
 
 # Password validation
@@ -137,3 +138,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR.parent / 'frontend' / 'dist'
 ]
+
+LOCKING_BACKEND = settings_gitignore.LOCKING_BACKEND
+
+LOGGING = settings_gitignore.LOGGING

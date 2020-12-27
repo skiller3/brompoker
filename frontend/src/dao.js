@@ -42,7 +42,7 @@ export default {
 
     changePassword(oldPassword, newPassword, successFn, errorFn) {
         post('/change_password/', {oldPassword, newPassword}, successFn, errorFn)
-    }
+    },
 /*
     getLobbyData() {
 
@@ -51,13 +51,16 @@ export default {
     createNewGame(settings) {
 
     }
-
-    installLobbyMessageHandler(handlerFn) {
-
-    }
-
-    installGameMessageHandler(handlerFn) {
-
-    }
 */
+
+    subscribeToClubList() {
+        const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
+        return new WebSocket(protocol + location.host + '/ws/clublist/')
+    }
+        
+
+    /*subscribeToGameMessages(handlerFn) {*/
+    /**/ 
+    /*} // */
+        
 }

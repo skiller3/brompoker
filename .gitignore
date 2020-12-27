@@ -309,3 +309,6 @@ dmypy.json
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/python,node,emacs,vscode
+
+### brompoker-specific files ###
+settings_gitignore.py

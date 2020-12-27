@@ -173,6 +173,7 @@ limitations under the License.
   */
   .profile-menu {
     width: 4em !important;
+    min-width: 4em !important;
   }
   a.github-link {
     border: 1px solid white;
