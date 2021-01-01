@@ -14,7 +14,7 @@
 limitations under the License.
 -->
 <template>
-  <v-dialog v-model="visible" width="50vw" v-bind:class="{'v-dialog-error': error}">
+  <v-dialog v-model="this.$root.showPasswordChangeDialog" width="50vw" v-bind:class="{'v-dialog-error': error}">
     <v-card>
       <v-card-title class="headline">Change Password</v-card-title>
       <v-card-text>

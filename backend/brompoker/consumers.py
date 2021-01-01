@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from .locking import create_lock, async_acquire, async_release
+from django.forms.models import model_to_dict
 from . import models
 import logging
 import json
@@ -17,8 +18,18 @@ class ClubListConsumer(AsyncWebsocketConsumer):
 
         # Join room group
         await self.channel_layer.group_add('clublist', self.channel_name)
-
         await self.accept()
+
+        lock = create_lock("clublist") 
+        await async_acquire(lock)
+        self._logger.debug("Acquired clublist lock")
+        clubs = await sync_to_async(self._get_clubs)()
+        await self.send(text_data=json.dumps({
+            "type": "CREATE_CLUBS",
+            "data": clubs
+        }))
+        await async_release(lock)
+        self._logger.debug("Released clublist lock")
 
     async def disconnect(self, close_code):
         self._logger.debug(f"disconnect() called with close code {close_code}. User: {self.scope['user']}")
@@ -26,21 +37,7 @@ class ClubListConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        event = json.loads(text_data, encoding="utf-8")
-        if event.get("type") != "READY":
-            return
-        lock = create_lock("clublist") 
-        await async_acquire(lock)
-        self._logger.debug("Acquired clublist lock")
-        clubs = await sync_to_async(self._get_clubs)()
-        await self.send(text_data=json.dumps({
-            "clubs": clubs,
-            "games": [],
-            "sessions": []
-        }))
-        await async_release(lock)
-        self._logger.debug("Released clublist lock")
-
+        self._logger.debug(f"receive() called with text data {text_data}. User: {self.scope['user']}")
 
     # Receive message from room group
     async def handle_clublist_update(self, notification):
@@ -57,7 +54,7 @@ class ClubListConsumer(AsyncWebsocketConsumer):
             clubs = clubs | models.Club.objects.filter(clubmembership__user=user)
         else:
             clubs = models.Club.objects.filter(allow_non_members=True, allow_anonymous_users=True)
-        return [club.name for club in clubs]
+        return [model_to_dict(club) for club in clubs]
 
 
 class GameListConsumer(AsyncWebsocketConsumer):

@@ -37,32 +37,73 @@ dao.isAuthenticated(
       data: function() {
         return { 
           authenticated,
+          selectedClub: null,
+
+          showImageUploadDialog: false,
+          showPasswordChangeDialog: false,
+
           clubs: [],
           games: [],
           sessions: []
         }
       },
+      computed: {
+        showLoginDialog() {
+          return !this.authenticated
+        }
+      },
       render: h => h(App),
-      mounted: function() {
-        const lobbySocket = dao.subscribeToClubList()
-        lobbySocket.onmessage = function(event) {
-          const payload = JSON.parse(event.data)
-          payload.clubs.forEach((c) => window.vue.clubs.push(c))
-          payload.games.forEach((g) => this.games.push(g))
-          payload.sessions.forEach((s) => this.sessions.push(s))
+      methods: {
+        logout() {
+          dao.logout(
+            () => {
+              console.log("Successfully logged out via server!")
+              this.$root.authenticated = false          
+            },
+            () => {
+              console.log("Failed to log out via server!") 
+            }
+          )
         }
-        lobbySocket.onclose = function() {
-          console.error('Lobby socket closed')
-        }
-        lobbySocket.onerror = function() {
-          console.error('Lobby socket received error')
-        }
-        lobbySocket.onopen = function(){
-          console.log('Lobby socket opened')
-        }
-        window.lobbySocket = lobbySocket
       }
-    }).$mount('#app')
+    })
+
+    window.vue.$mount('#app')
+
+    window.clubSocket = dao.subscribeToClubList()
+    window.clubSocket.onmessage = function(event) {
+      const payload = JSON.parse(event.data)
+      if (payload.type === 'CREATE_CLUBS') {
+        payload.data.forEach((club) => {
+          if (!window.vue.clubs.map(c => c.id).includes(club.id)) {
+            window.vue.clubs.push(club)
+          }
+        })
+      }
+      if (payload.type === 'UPDATE_CLUBS') {
+        payload.data.forEach((club) => {
+          for (var i = 0; i < window.vue.clubs.length; i++) {
+            if (window.vue.clubs[i].id === club.id) {
+              window.vue.clubs[i] = club
+            }
+          }
+        })
+      }
+      if (payload.type === 'DELETE_CLUBS') {
+        payload.data.forEach((club) => {
+          window.vue.clubs = window.vue.clubs.filter(c => c.id !== club.id)
+        })
+      }
+    }
+    window.clubSocket.onclose = function() {
+      console.error('Club socket closed')
+    }
+    window.clubSocket.onerror = function() {
+      console.error('Club socket received error')
+    }
+    window.clubSocket.onopen = function(){
+      console.log('Club socket opened')
+    }
   }, 
   function() {
     document.write("Failed to check current authentication status and mount application!")

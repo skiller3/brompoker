@@ -14,7 +14,7 @@
 limitations under the License.
 -->
 <template>
-  <v-dialog v-model="visible" persistent width="50vw" v-bind:class="{'v-dialog-error': error}">
+  <v-dialog v-model="this.$root.showLoginDialog" persistent width="50vw" v-bind:class="{'v-dialog-error': error}">
     <v-card>
       <v-card-title class="headline">Authenticate</v-card-title>
       <v-card-text>

@@ -15,14 +15,28 @@
 */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Games from '../views/Games'
-import SessionHistory from '../views/SessionHistory'
+import Games from '../components/Games'
+import Ledger from '../components/Ledger'
 
 // import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    redirect: '/club'
+  },
+  {
+    path: '/club/:clubid/games',
+    name: 'Games',
+    component: Games
+  },
+  {
+    path: '/club/:clubid/ledger',
+    name: 'Ledger',
+    component: Ledger
+  }
   /*
   {
     path: '/',
@@ -44,20 +58,6 @@ const routes = [
   /*
   }
   */
-  {
-    path: '/',
-    redirect: '/games'
-  },
-  {
-    path: '/games',
-    name: 'Games',
-    component: Games
-  },
-  {
-    path: '/session-history',
-    name: 'Session History',
-    component: SessionHistory
-  }
 ]
 
 const router = new VueRouter({

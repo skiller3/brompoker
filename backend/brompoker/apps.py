@@ -29,7 +29,7 @@ class BrompokerAppConfig(AppConfig):
 
     def _notify_clublist_consumers(self, sender, **kwargs):
         self._logger.debug(f"_notify_clublist_consumers() called. Kwargs: {kwargs}")
-        event_type = "CREATE_CLUB" if kwargs["created"] else "UPDATE_CLUB"
+        event_type = "CREATE_CLUBS" if kwargs["created"] else "UPDATE_CLUBS"
         event_data = model_to_dict(kwargs["instance"])
         event = {"type": event_type, "data": event_data}
         notification = {"type": "handle_clublist_update", "event": event}

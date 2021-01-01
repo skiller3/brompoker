@@ -15,19 +15,13 @@ limitations under the License.
 -->
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    This is the ledger
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'SessionHistory',
-  components: {
-    HelloWorld
-  }
+  components: {}
 }
 </script>

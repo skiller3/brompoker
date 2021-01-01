@@ -14,7 +14,7 @@
 limitations under the License.
 -->
 <template>
-  <v-dialog v-model="visible" width="50vw">
+  <v-dialog v-model="this.$root.showImageUploadDialog" width="50vw">
     <v-card>
       <v-card-title class="headline">Table Image</v-card-title>
       <v-card-text>
