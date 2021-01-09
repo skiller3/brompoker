@@ -23,7 +23,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="club in $root.clubs" :key="club.id" @click="() => console.log('club clicked')">
+          <v-list-item v-for="club in $root.clubs" :key="club.id" @click="() => switchClub(club.id)">
             <v-list-item-title>{{club.name}}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -56,15 +56,15 @@
           </v-avatar>
         </template>
         <v-list>
-          <v-list-item @click="() => this.$root.showImageUploadDialog = true">
+          <v-list-item @click.stop="() => $root.showImageUploadDialog = true">
             <v-list-item-icon><v-icon>mdi-image-multiple-outline</v-icon></v-list-item-icon>
             <v-list-item-title>Upload Avatar Image</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="() => this.$root.showPasswordChangeDialog = true">
+          <v-list-item @click.stop="() => $root.showPasswordChangeDialog = true">
             <v-list-item-icon><v-icon>mdi-lock-reset</v-icon></v-list-item-icon>
             <v-list-item-title>Change Password</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="this.$root.logout">
+          <v-list-item @click="$root.logout">
             <v-list-item-icon><v-icon>mdi-exit-run</v-icon></v-list-item-icon>
             <v-list-item-title>Log Out</v-list-item-title>
           </v-list-item>
@@ -109,5 +109,18 @@
 </style>
 
 <script>
-export default {}
+export default {
+    name: 'AppBar',
+    methods: {
+        switchClub(clubId) {
+            console.log(`Switching to club ${clubId}`)
+            if (this.$root.selectedTab === 'games') {
+                this.$root.$router.push(`/club/${clubId}/games`)
+            }
+            if (this.$root.selectedTab === 'ledger') {
+                this.$root.$router.push(`/club/${clubId}/ledger`)
+            }
+        }
+    }
+}
 </script>

@@ -84,5 +84,3 @@ class GameEvent(models.Model):
 
     type = models.CharField(null=False, blank=False, max_length=64)
     content = models.JSONField(null=False, blank=False)
-
-

@@ -11,7 +11,7 @@
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
-limitations under the License.
+ limitations under the License.
 -->
 <template>
   <v-app>
@@ -20,9 +20,9 @@ limitations under the License.
       <!-- <ImageUploadDialog></ImageUploadDialog> -->
       <PasswordChangeDialog></PasswordChangeDialog>
       <LoginDialog></LoginDialog>
-      <v-tabs centered>
-        <v-tab>Games</v-tab>
-        <v-tab>Ledger</v-tab>
+      <v-tabs v-model="$root.selectedTab" centered>
+        <v-tab key="games" @change="() => $root.$router.push(`/club/${$root.selectedClub.id}/games`)">Games</v-tab>
+        <v-tab key="ledger" @change="() => $root.$router.push(`/club/${$root.selectedClub.id}/ledger`)">Ledger</v-tab>
       </v-tabs>
       <router-view></router-view>
     </v-main>
@@ -30,9 +30,11 @@ limitations under the License.
 </template>
 
 <style>
+  /*
   .v-overlay__scrim {
     opacity: 0.8 !important;
   }
+  */
   .v-dialog--active {
     border: 1px solid #2196f3;
   }

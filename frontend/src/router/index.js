@@ -18,46 +18,49 @@ import VueRouter from 'vue-router'
 import Games from '../components/Games'
 import Ledger from '../components/Ledger'
 
-// import Home from '../views/Home.vue'
-
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '*',
     redirect: '/club'
   },
   {
     path: '/club/:clubid/games',
     name: 'Games',
-    component: Games
+    component: Games,
+    beforeEnter(to, from, next) {
+      if (window.vue === undefined) {
+        // The vue instance may not be defined on initial page load or
+        // refresh...
+        next('/club')
+      }
+      else {
+        window.vue.selectedClub = window.vue.clubs.filter(c => c.id == to.params.clubid)[0]
+        localStorage.lastSelectedClubId = to.params.clubid
+        window.vue.selectedTab = 'games'
+        next()
+      }
+    }
   },
   {
     path: '/club/:clubid/ledger',
     name: 'Ledger',
-    component: Ledger
+    component: Ledger,
+    beforeEnter(to, from, next) {
+      if (window.vue === undefined) {
+        // The vue instance may not be defined on initial page load or
+        // refresh...
+        next('/club')
+      }
+      else {
+        window.vue.selectedClub = window.vue.clubs.filter(c => c.id == to.params.clubid)[0]
+        localStorage.lastSelectedClubId = to.params.clubid
+        window.vue.selectedTab = 'ledger'
+        next()
+      }
+    }
   }
-  /*
-  {
-    path: '/',
-    redirect: '/home'
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-  */
-  //  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  /*
-  }
-  */
 ]
 
 const router = new VueRouter({

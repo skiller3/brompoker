@@ -55,8 +55,18 @@ export default {
 
     subscribeToClubList() {
         const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
-        return new WebSocket(protocol + location.host + '/ws/clublist/')
-    }
+        return new WebSocket(`${protocol}${location.host}/ws/clublist/`)
+    },
+
+    subscribeToGameList(clubId) {
+        const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
+        return new WebSocket(`${protocol}${location.host}/ws/gamelist/${clubId}/`)
+    },
+
+    subscribeToSessionList(clubId) {
+        const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
+        return new WebSocket(`${protocol}${location.host}/ws/sessionlist/${clubId}/`)
+    } 
         
 
     /*subscribeToGameMessages(handlerFn) {*/

@@ -11,7 +11,7 @@
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
-limitations under the License.
+ limitations under the License.
 -->
 <template>
   <v-dialog v-model="this.$root.showPasswordChangeDialog" width="50vw" v-bind:class="{'v-dialog-error': error}">
@@ -90,11 +90,6 @@ export default {
       error: false
     }
   },
-  computed: {
-    visible() {
-      return !this.$parent.authenticated
-    }
-  },
   watch: {
     error: function(error) {
         if (error) {
@@ -103,12 +98,6 @@ export default {
         else{
             document.querySelector(".v-dialog--active").style.borderColor = "#2196f3"
         }
-    },
-    visible: function(visible) {
-      if (!visible) {
-        // Force the closing of the overlay masks
-        document.getElementsByClassName("v-overlay").forEach(function(el) {el.remove()})
-      }
     }
   }, 
   methods: {
